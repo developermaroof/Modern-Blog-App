@@ -1,18 +1,17 @@
 import { PostCard, Categories, PostWidget, Header } from "@/components";
+import { getPosts } from "@/services";
 
-const posts = [
-  { title: "Post 1", excerpt: "Content for post 1" },
-  { title: "Post 2", excerpt: "Content for post 2" },
-];
-export default function Home() {
+export default async function Home() {
+  const postsData = await getPosts();
+
   return (
     <>
       <Header />
       <div className="container mx-auto px-10 mb-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-8 col-span-1">
-            {posts.map((post) => (
-              <PostCard post={post} key={post.title} />
+            {postsData.map((post) => (
+              <PostCard post={post.node} key={post.node.title} />
             ))}
           </div>
           <div className="lg:col-span-4 col-span-1">
