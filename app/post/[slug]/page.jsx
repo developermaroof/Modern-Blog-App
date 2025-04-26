@@ -19,36 +19,52 @@ export async function generateStaticParams() {
 }
 
 // This is the main component for the page
-export default async function PostDetails({ params }) {
-  const post = await getPostDetails(params.slug);
+export default async function PostDetails(props) {
+  // Correctly handle params in Next.js 15.3.1
+  const { params } = props;
+  const slug = params?.slug;
 
-  if (!post) {
+  try {
+    const post = await getPostDetails(slug);
+
+    if (!post) {
+      return (
+        <div className="container mx-auto px-10 mb-8">
+          <div className="text-center">Post not found</div>
+        </div>
+      );
+    }
+
     return (
       <div className="container mx-auto px-10 mb-8">
-        <div className="text-center">Post not found</div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container mx-auto px-10 mb-8">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div className="col-span-1 lg:col-span-8">
-          <PostDetail post={post} />
-          <Author author={post.author} />
-          <CommentsForm slug={post.slug} />
-          <Comments slug={post.slug} />
-        </div>
-        <div className="col-span-1 lg:col-span-4">
-          <div className="relative lg:sticky top-8">
-            <PostWidget
-              slug={post.slug}
-              category={post.category?.map((cat) => cat.slug) || []}
-            />
-            <Categories />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="col-span-1 lg:col-span-8">
+            <PostDetail post={post} />
+            <Author author={post.author} />
+            <CommentsForm slug={post.slug} />
+            <Comments slug={post.slug} />
+          </div>
+          <div className="col-span-1 lg:col-span-4">
+            <div className="relative lg:sticky top-8">
+              <PostWidget
+                slug={post.slug}
+                category={post.category?.map((cat) => cat.slug) || []}
+              />
+              <Categories />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error("Error in PostDetails:", error);
+    return (
+      <div className="container mx-auto px-10 mb-8">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">Error loading post</h2>
+          <p>Sorry, there was a problem loading this post.</p>
+        </div>
+      </div>
+    );
+  }
 }

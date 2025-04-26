@@ -35,6 +35,7 @@ export const getPosts = async () => {
   const result = await request(graphqlAPI, query);
   return result.postsConnection.edges;
 };
+
 export const getPostDetails = async (slug) => {
   const query = gql`
     query GetPostDetails($slug: String!) {
@@ -66,9 +67,6 @@ export const getPostDetails = async (slug) => {
   `;
 
   const result = await request(graphqlAPI, query, { slug });
-
-  // Since we're querying posts but expect a single result,
-  // we should return the first item from the array
   return result.posts[0];
 };
 
@@ -90,13 +88,15 @@ export const getRecentPosts = async () => {
   return result.posts;
 };
 
-export const getSimilarPosts = async (categories, slug) => {
+// Fixed version of getSimilarPosts with category_some instead of categories_some
+export const getSimilarPosts = async (category, slug) => {
+  // First try with category_some
   const query = gql`
     query GetPostDetails($slug: String!, $category: [String!]) {
       posts(
         where: {
           slug_not: $slug
-          AND: { categories_some: { slug_in: $category } }
+          AND: { category_some: { slug_in: $category } }
         }
         last: 3
       ) {
@@ -110,8 +110,34 @@ export const getSimilarPosts = async (categories, slug) => {
     }
   `;
 
-  const result = await request(graphqlAPI, query, { categories, slug });
-  return result.posts;
+  try {
+    const result = await request(graphqlAPI, query, { slug, category });
+    return result.posts;
+  } catch (error) {
+    console.error("Error in getSimilarPosts:", error);
+
+    // Fallback to a simpler query that doesn't filter by category
+    const fallbackQuery = gql`
+      query GetFallbackPosts($slug: String!) {
+        posts(where: { slug_not: $slug }, last: 3) {
+          title
+          featuredImage {
+            url
+          }
+          createdAt
+          slug
+        }
+      }
+    `;
+
+    try {
+      const fallbackResult = await request(graphqlAPI, fallbackQuery, { slug });
+      return fallbackResult.posts;
+    } catch (fallbackError) {
+      console.error("Fallback query also failed:", fallbackError);
+      return []; // Return empty array as a last resort
+    }
+  }
 };
 
 export const getCategories = async () => {
@@ -126,4 +152,25 @@ export const getCategories = async () => {
 
   const result = await request(graphqlAPI, query);
   return result.categories;
+};
+
+export const submitComment = async (obj) => {
+  try {
+    const response = await fetch("/api/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(obj),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error submitting comment:", error);
+    throw error;
+  }
 };
