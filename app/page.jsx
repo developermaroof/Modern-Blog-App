@@ -1,4 +1,5 @@
 import { PostCard, Categories, PostWidget } from "@/components";
+import { FeaturedPosts } from "@/sections";
 import { getPosts } from "@/services";
 
 export default async function Home() {
@@ -7,6 +8,7 @@ export default async function Home() {
   return (
     <>
       <div className="container mx-auto px-10 mb-8">
+        <FeaturedPosts />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-8 col-span-1">
             {postsData.map((post) => (
