@@ -9,20 +9,16 @@ import {
   CommentsForm,
 } from "@/components";
 
-// Define the generateStaticParams function for static generation
+// 1. generateStaticParams stays the same
 export async function generateStaticParams() {
   const posts = await getPosts();
-
-  return posts.map(({ node: { slug } }) => ({
-    slug: slug,
-  }));
+  return posts.map(({ node: { slug } }) => ({ slug }));
 }
 
-// This is the main component for the page
-export default async function PostDetails(props) {
-  // Correctly handle params in Next.js 15.3.1
-  const { params } = props;
-  const slug = params?.slug;
+// 2. Await `params` in your Server Component
+export default async function PostDetails({ params }) {
+  // unwrap the params promise
+  const { slug } = await params;
 
   try {
     const post = await getPostDetails(slug);
