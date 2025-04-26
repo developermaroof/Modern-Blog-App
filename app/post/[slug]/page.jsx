@@ -24,11 +24,7 @@ export default async function PostDetails({ params }) {
     const post = await getPostDetails(slug);
 
     if (!post) {
-      return (
-        <div className="container mx-auto px-10 mb-8">
-          <div className="text-center">Post not found</div>
-        </div>
-      );
+      return <Loader />;
     }
 
     return (
