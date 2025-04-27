@@ -22,7 +22,10 @@ const PostDetail = ({ post }) => {
     switch (type) {
       case "heading-three":
         return (
-          <h3 key={index} className="text-xl font-semibold mb-4">
+          <h3
+            key={index}
+            className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100"
+          >
             {modifiedText.map((item, i) => (
               <React.Fragment key={i}>{item}</React.Fragment>
             ))}
@@ -30,7 +33,10 @@ const PostDetail = ({ post }) => {
         );
       case "paragraph":
         return (
-          <p key={index} className="mb-8">
+          <p
+            key={index}
+            className="mb-8 text-gray-700 dark:text-gray-300 leading-relaxed"
+          >
             {modifiedText.map((item, i) => (
               <React.Fragment key={i}>{item}</React.Fragment>
             ))}
@@ -38,7 +44,10 @@ const PostDetail = ({ post }) => {
         );
       case "heading-four":
         return (
-          <h4 key={index} className="text-md font-semibold mb-4">
+          <h4
+            key={index}
+            className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100"
+          >
             {modifiedText.map((item, i) => (
               <React.Fragment key={i}>{item}</React.Fragment>
             ))}
@@ -52,6 +61,7 @@ const PostDetail = ({ post }) => {
             height={obj.height}
             width={obj.width}
             src={obj.src}
+            className="rounded-lg shadow-md my-8"
           />
         );
       default:
@@ -60,32 +70,32 @@ const PostDetail = ({ post }) => {
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg lg:p-8 pb-12 mb-8">
-      <div className="relative overflow-hidden shadow-md mb-6">
+    <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl lg:p-8 pb-12 mb-8">
+      <div className="relative overflow-hidden shadow-md mb-8">
         <img
           src={post.featuredImage.url}
           alt={post.title}
-          className="object-top h-full w-full rounded-t-lg"
+          className="object-cover w-full h-full rounded-t-xl max-h-96"
         />
       </div>
-      <div className="px-4 lg:px-0">
-        <div className="flex items-center w-full mb-8">
-          <div className="flex items-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
+      <div className="px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 w-full">
+          <div className="flex items-center mb-6 md:mb-0">
             <img
               src={post.author.photo.url}
               alt={post.author.name}
-              height="30px"
-              width="30px"
-              className="align-middle rounded-full"
+              height="40px"
+              width="40px"
+              className="align-middle rounded-full border-2 border-indigo-100"
             />
-            <p className="inline align-middle text-gray-700 ml-2 text-lg">
+            <p className="inline align-middle text-gray-700 dark:text-gray-300 ml-3 text-lg font-medium">
               {post.author.name}
             </p>
           </div>
-          <div className="font-medium text-gray-700">
+          <div className="flex items-center text-gray-600 dark:text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 inline mr-2 text-pink-500"
+              className="h-5 w-5 inline mr-2 text-indigo-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -100,7 +110,9 @@ const PostDetail = ({ post }) => {
             <span>{moment(post.createdAt).format("MMM DD, YYYY")}</span>
           </div>
         </div>
-        <h1 className="mb-8 text-3xl font-semibold">{post.title}</h1>
+        <h1 className="mb-8 text-3xl font-bold text-gray-800 dark:text-gray-100">
+          {post.title}
+        </h1>
         {post.content.raw.children.map((typeObj, index) => {
           const children = typeObj.children.map((item, itemIndex) =>
             getContentFragment(itemIndex, item.text, item)

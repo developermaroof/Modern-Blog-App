@@ -76,35 +76,36 @@ const CommentsForm = ({ slug }) => {
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-8 pb-12 mb-8">
-      <h3 className="text-xl mb-8 font-semibold border-b pb-4">
-        Leave a comment
+    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-8">
+      <h3 className="text-xl font-bold mb-8 border-b border-gray-200 dark:border-gray-700 pb-4 text-gray-800 dark:text-gray-100">
+        Leave a Comment
       </h3>
-      <div className="grid grid-cols-1 gap-4 mb-4">
+      <div className="grid grid-cols-1 gap-4 mb-6">
         <textarea
           ref={commentEl}
-          className="p-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-gray-200 bg-gray-100 text-gray-700"
-          placeholder="Comment"
+          className="p-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-indigo-400 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition duration-300"
+          placeholder="Write your comment here..."
           name="comment"
+          rows="6"
         />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         <input
           type="text"
           ref={nameEl}
-          className="py-2 px-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-gray-200 bg-gray-100 text-gray-700"
+          className="py-3 px-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-indigo-400 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition duration-300"
           placeholder="Name"
           name="name"
         />
         <input
-          type="email" // Changed to email type for better validation
+          type="email"
           ref={emailEl}
-          className="py-2 px-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-gray-200 bg-gray-100 text-gray-700"
+          className="py-3 px-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-indigo-400 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition duration-300"
           placeholder="Email"
           name="email"
         />
       </div>
-      <div className="grid grid-cols-1 gap-4 mb-4">
+      <div className="grid grid-cols-1 gap-4 mb-6">
         <div>
           <input
             type="checkbox"
@@ -112,34 +113,37 @@ const CommentsForm = ({ slug }) => {
             id="storeData"
             name="storeData"
             defaultChecked
+            className="accent-indigo-500"
           />
           <label
             htmlFor="storeData"
-            className="text-gray-500 cursor-pointer ml-2"
+            className="text-gray-600 dark:text-gray-400 cursor-pointer ml-2"
           >
-            Save my email and name for the next time I comment
+            Save my information for next time
           </label>
         </div>
       </div>
       {error && (
-        <p className="text-xs text-red-500 mb-4">
+        <p className="text-sm text-red-500 mb-4 bg-red-50 dark:bg-red-900/20 p-2 rounded-md">
           {errorMessage || "All fields are required!"}
         </p>
       )}
-      <div>
+      <div className="mt-6">
         <button
           type="button"
           onClick={handleCommentSubmission}
           disabled={isSubmitting}
-          className={`transition duration-500 ease ${
-            isSubmitting ? "bg-gray-500" : "bg-pink-600 hover:bg-indigo-900"
-          } inline-block rounded-full py-3 px-8 cursor-pointer text-white`}
+          className={`transition duration-300 ease ${
+            isSubmitting
+              ? "bg-gray-500"
+              : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+          } inline-block rounded-full py-3 px-8 cursor-pointer text-white font-medium transform hover:-translate-y-1`}
         >
-          {isSubmitting ? "Submitting..." : "Post Comment"}
+          {isSubmitting ? "Posting..." : "Post Comment"}
         </button>
         {showSuccessMessage && (
-          <span className="text-xl float-right font-semibold mt-3 text-green-500">
-            Comment submitted for review.
+          <span className="ml-4 text-green-500 font-semibold">
+            Comment submitted for review!
           </span>
         )}
       </div>

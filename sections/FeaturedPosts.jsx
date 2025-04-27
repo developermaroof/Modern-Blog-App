@@ -36,7 +36,7 @@ const FeaturedPosts = () => {
   }, []);
 
   const customLeftArrow = (
-    <div className="absolute arrow-btn left-0 text-center py-3 cursor-pointer bg-pink-600 rounded-full">
+    <div className="absolute arrow-btn left-0 text-center py-3 cursor-pointer bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-full transition duration-300 transform hover:scale-105">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-6 w-6 text-white"
@@ -55,7 +55,7 @@ const FeaturedPosts = () => {
   );
 
   const customRightArrow = (
-    <div className="absolute arrow-btn right-0 text-center py-3 cursor-pointer bg-pink-600 rounded-full">
+    <div className="absolute arrow-btn right-0 text-center py-3 cursor-pointer bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-full transition duration-300 transform hover:scale-105">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-6 w-6 text-white"
@@ -74,13 +74,16 @@ const FeaturedPosts = () => {
   );
 
   return (
-    <div className="mb-8">
+    <div className="mb-12">
+      <h2 className="text-2xl font-bold text-gray-100 mb-6">Featured Posts</h2>
       <Carousel
         infinite
         customLeftArrow={customLeftArrow}
         customRightArrow={customRightArrow}
         responsive={responsive}
         itemClass="px-4"
+        autoPlay
+        autoPlaySpeed={5000}
       >
         {dataLoaded &&
           featuredPosts.map((post, index) => (
