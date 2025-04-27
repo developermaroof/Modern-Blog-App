@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
 import FeaturedPostCard from "@/components/FeaturedPostCard";
+import React, { useState, useEffect } from "react";
 import { getFeaturedPosts } from "@/services";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
